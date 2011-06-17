@@ -15,8 +15,7 @@
 #
 # ==============================================================================
 
-#require(stats)
-#require(GISTools)
+
 
 
   
@@ -64,6 +63,7 @@
    x[x<0] <- 0
    x <- correct2Dm(x,zones,pops)
    if (verbose) {
+     flush.console()
      cat(sprintf("Maximum Change: %12.5f - will stop at %12.5f\n", max(abs(old.x - x)),stopper))}
    if (max(abs(old.x - x)) < stopper) break }
  return(x)} 
@@ -98,5 +98,46 @@ pycno <- function(x,pops,celldim,r=0.2,converge=3,verbose=TRUE) {
   pops2 <- c(pops,0)
   pm <- .pycno.core(gm,pops2,r=r,converge=converge,verbose=verbose)
   result <- .matrix2grid(gr,pm)
+  proj4string(result) <- CRS(proj4string(x))
   return(result) }
   
+#=================================================================================
+#
+# Helper function to extract a matrix of pixel-wise population estimates from
+# a SpatialGridDataFrame such as that produced by 'pycno'
+# 
+#================================================================================
+  
+.pycno2matrix <- function(x) {
+	xcoords <- unique(coordinates(x)[,1])
+	ycoords <- unique(coordinates(x)[,2])
+	zcoords <- slot(x,'data')[,1]
+	result <- matrix(zcoords,length(xcoords),length(ycoords))
+	result <- result[,rev(1:ncol(result))]
+	rownames(result) <- rev(sprintf("%7.4g",xcoords))
+	colnames(result) <- sprintf("%7.4g",ycoords)
+	return(t(result))
+} 
+
+#               Estimate populations for a new set of polygons
+# =============================================================================
+#
+# The key function is called estimate.pycno 
+# it takes the form
+#    result <- predict.pycno(pycgrid,spdf)
+# Where pycgrid is a SpatialGridDataFrame created by pycno
+#       spdf is a SpatialPolygonsDataFrame giving the zones for which estimates
+#       are needed.
+#       result is a vector of poluation estimates
+#        
+#
+# ==============================================================================
+
+
+
+estimate.pycno <- function(sgdf,spdf) {
+	pfi2 <- SpatialPoints(coordinates(data.frame(sgdf)[,2:3]))
+	proj4string(pfi2) <- CRS(proj4string(sgdf))
+	temp <- gContains(spdf,pfi2,byid=TRUE)
+	return(tapply(data.frame(sgdf)[,1],apply(temp,1,which),sum)) 
+}
