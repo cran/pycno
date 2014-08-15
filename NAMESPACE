@@ -1,1 +1,2 @@
-exportPattern("^[[:alpha:]]+")
+export(pycno,estimate.pycno)
+import(maptools,rgeos,sp)

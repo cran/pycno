@@ -69,12 +69,18 @@
  return(x)} 
  
 .poly2grid <- function(x,celldim) {
-  bbx <- slot(x,'bbox')
-  offset <- bbx[,1]
-  extent <- bbx[,2] - offset
-  shape <- ceiling(extent / celldim)
-  sg <- SpatialGrid(GridTopology(offset,c(celldim,celldim),shape))
-  res <- overlay(SpatialPoints(coordinates(sg)),x)
+  if (! is(celldim,"SpatialGrid")) {
+    bbx <- slot(x,'bbox')
+    offset <- bbx[,1]
+    extent <- bbx[,2] - offset
+    shape <- ceiling(extent / celldim)
+    sg <- SpatialGrid(GridTopology(offset,c(celldim,celldim),shape)) 
+  } else {
+    sg <- celldim
+  }
+  px <- CRS(proj4string(x))
+  proj4string(sg) <- px
+  res <- SpatialPoints(coordinates(sg),proj4string=px) %over% as(x,"SpatialPolygons")
   spdf <- SpatialPixelsDataFrame(coordinates(sg),data.frame(zone=res))
   return(as(spdf,"SpatialGridDataFrame"))}
 

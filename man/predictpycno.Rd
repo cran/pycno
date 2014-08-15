@@ -46,15 +46,17 @@ Pycnophylatic interpolation has the property that the sum of the estimated value
 
 \examples{
 # Read in data for North Carolina as a SpatialPolygonsDataFrame
-nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
+  IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
 
 # Compute the pycnophylactic surface for 1974 births as a SpatialGridDataFrame
 # Note probably shouldn't really base grid cells on Lat/Long coordinates
 # This example just serves to illustrate the use of the functions
-births74 <- pycno(nc.sids,nc.sids$BIR74,0.05)
+births74 <- pycno(nc.sids,nc.sids$BIR74,0.05,converge=1)
 
 # Create a new 'blocky' set of zones
-blocks <- gUnionCascaded(nc.sids,1*(coordinates(nc.sids)[,2] > 36) + 2*(coordinates(nc.sids)[,1] > -80))
+blocks <- gUnionCascaded(nc.sids,1*(coordinates(nc.sids)[,2] > 36) + 
+  2*(coordinates(nc.sids)[,1] > -80))
 # Plot the bloocky zones
 plot(blocks)
 # Aggregate data to them
