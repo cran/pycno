@@ -26,7 +26,7 @@ when summed over the polygons contained in each pixel.
 \author{
 Chris Brunsdon
 
-Maintainer: Chris Brunsdon \email{cb179@le.ac.uk}
+Maintainer: Francesca Bitonti \email{francesca.bitonti@phd.unict.it}
 }
 \references{
 Tobler, W.R. (1979) \emph{Smooth Pycnophylactic Interpolation for Geographical Regions}. Journal of the American Statistical Association, v74(367) pp. 519-530.

@@ -1,2 +1,5 @@
 export(pycno,estimate.pycno)
-import(maptools,rgeos,sp)
+import(maptools,rgeos,sp,methods,utils)
+importFrom("methods", "as", "is", "slot")
+importFrom("utils", "flush.console")
+importFrom("stats", "filter")

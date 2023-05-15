@@ -64,7 +64,5 @@ estimates <- estimate.pycno(births74,blocks)
 # Write the estimates on to the map
 text(coordinates(blocks),as.character(estimates))
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{ smoothing }
-\keyword{ spatial }% __ONLY ONE__ keyword per line
+\keyword{ spatial }
