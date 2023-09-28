@@ -1,6 +1,6 @@
-58b4b7c4bbfa7a46858a0914c0b25830 *DESCRIPTION
-b05331ec5ea5f0ce877f1baad178771b *NAMESPACE
-a12f2dada5abca3373f09973c97f35c8 *R/pycno.R
-1f68b06e4d6d8e4884393398eaaaead9 *man/predictpycno.Rd
-04784ac034f1355b16bb75eed44c95d5 *man/pycno-package.Rd
-3793cb28327a2106c7f824a08e1cc959 *man/pycno.Rd
+3ef70d09d91176395cd094d3f757371b *DESCRIPTION
+d5f6adc22529c3fa174e391fc9d47df6 *NAMESPACE
+7edd02ff1ca1a72746ccc9a716787dec *R/pycno.R
+ad7d233ed0ca81f060fd4617875d3ce2 *man/predictpycno.Rd
+580daad597812993b29421695aa0a2bc *man/pycno-package.Rd
+7d836ad3c0bf66ac9ef7c4255e77fe07 *man/pycno.Rd

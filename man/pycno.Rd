@@ -54,9 +54,13 @@ Pycnophylatic interpolation has the property that the sum of the estimated value
 
 
 \examples{
+library(sp)
 # Read in data for North Carolina as a SpatialPolygonsDataFrame
-nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
-   IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+#nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
+#   IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+
+nc.sids <- as(sf::st_read(system.file("shape/nc.shp", package="sf")), "Spatial")
+row.names(nc.sids) <- as.character(nc.sids$FIPSNO)
 
 # Compute the pycnophylactic surface for 1974 births as a SpatialGridDataFrame
 # Note probably shouldn't really base grid cells on Lat/Long coordinates

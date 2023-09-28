@@ -45,9 +45,13 @@ Pycnophylatic interpolation has the property that the sum of the estimated value
 }
 
 \examples{
+library(sp)
 # Read in data for North Carolina as a SpatialPolygonsDataFrame
-nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
-  IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+#nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
+#  IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+
+nc.sids <- as(sf::st_read(system.file("shape/nc.shp", package="sf")), "Spatial")
+row.names(nc.sids) <- as.character(nc.sids$FIPSNO)
 
 # Compute the pycnophylactic surface for 1974 births as a SpatialGridDataFrame
 # Note probably shouldn't really base grid cells on Lat/Long coordinates
@@ -55,9 +59,17 @@ nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1
 births74 <- pycno(nc.sids,nc.sids$BIR74,0.05,converge=1)
 
 # Create a new 'blocky' set of zones
-blocks <- gUnionCascaded(nc.sids,1*(coordinates(nc.sids)[,2] > 36) + 
-  2*(coordinates(nc.sids)[,1] > -80))
-# Plot the bloocky zones
+#blocks <- gUnionCascaded(nc.sids,1*(coordinates(nc.sids)[,2] > 36) + 
+#  2*(coordinates(nc.sids)[,1] > -80))
+
+crds <- sf::st_coordinates(sf::st_centroid(sf::st_geometry(sf::st_as_sf(nc.sids)),
+ of_largest_polygon = TRUE))
+block_ID <- 1*(crds[,2] > 36) + 2*(crds[,1] > -80)
+temp <- sf::st_as_sf(nc.sids)
+temp$block_ID <- block_ID
+blocks <- as(aggregate(temp, by=list(temp$block_ID), head, n=1), "Spatial")
+
+# Plot the blocky zones
 plot(blocks)
 # Aggregate data to them
 estimates <- estimate.pycno(births74,blocks)

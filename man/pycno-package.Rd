@@ -13,8 +13,8 @@ algorithm. The result is a SpatialGridDataFrame.
 \tabular{ll}{
 Package: \tab pycno\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2011-04-15\cr
+Version: \tab 1.4\cr
+Date: \tab 2023-09-28\cr
 License: \tab GPL (>=2)\cr
 LazyLoad: \tab yes\cr
 }
@@ -26,7 +26,7 @@ when summed over the polygons contained in each pixel.
 \author{
 Chris Brunsdon
 
-Maintainer: Francesca Bitonti \email{francesca.bitonti@phd.unict.it}
+Maintainer: Francesca Bitonti \email{francesca.bitonti@unict.it}
 }
 \references{
 Tobler, W.R. (1979) \emph{Smooth Pycnophylactic Interpolation for Geographical Regions}. Journal of the American Statistical Association, v74(367) pp. 519-530.
@@ -35,9 +35,13 @@ Tobler, W.R. (1979) \emph{Smooth Pycnophylactic Interpolation for Geographical R
 \keyword{ package }
 
 \examples{
+library(sp)
 # Read in data for North Carolina as a SpatialPolygonsDataFrame
-nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
-  IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+#nc.sids <- readShapeSpatial(system.file("shapes/sids.shp", package="maptools")[1], 
+#  IDvar="FIPSNO", proj4string=CRS("+proj=longlat +ellps=clrk66"))
+
+nc.sids <- as(sf::st_read(system.file("shape/nc.shp", package="sf")), "Spatial")
+row.names(nc.sids) <- as.character(nc.sids$FIPSNO)
 
 # Compute the pycnophylactic surface for 1974 births as a SpatialGridDataFrame
 # Note probably shouldn't really base grid cells on Lat/Long coordinates

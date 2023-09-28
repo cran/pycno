@@ -144,6 +144,9 @@ pycno <- function(x,pops,celldim,r=0.2,converge=3,verbose=TRUE) {
 estimate.pycno <- function(sgdf,spdf) {
 	pfi2 <- SpatialPoints(coordinates(data.frame(sgdf)[,2:3]))
 	proj4string(pfi2) <- CRS(proj4string(sgdf))
-	temp <- gContains(spdf,pfi2,byid=TRUE)
-	return(tapply(data.frame(sgdf)[,1],apply(temp,1,which),sum)) 
+        pfi2 <- sf::st_as_sf(pfi2)
+        pfi2$dens <- data.frame(sgdf)[,1]
+#	temp <- gContains(spdf,pfi2,byid=TRUE)
+#	return(tapply(data.frame(sgdf)[,1],apply(temp,1,which),sum)) 
+        aggregate(pfi2, by=sf::st_as_sf(spdf), sum)$dens
 }
